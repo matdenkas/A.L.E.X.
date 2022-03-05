@@ -71,4 +71,5 @@ bot.on('message', async message => {
 });
 
 require('./server')();
-bot.login('NzYxMzE0MjI0ODE0MjkzMDYy.X3YzHw.NBeRaOVgHqE2ODmLiGcuZoEj-GE');
+console.log(config.token);
+bot.login(config.token);
