@@ -1,6 +1,7 @@
 const { Client, Intents, MessageEmbed } = require('discord.js');
 const config = require('./config');
 const commands = require('./help');
+const util = require('./utility.js');
 
 let bot = new Client({
   fetchAllMembers: true,
@@ -11,12 +12,24 @@ let bot = new Client({
       type: 'LISTENING'
     },
   },
-  intents: [Intents.FLAGS.GUILDS, Intents.FLAGS.GUILD_MESSAGES],
+  intents: [Intents.FLAGS.GUILDS, Intents.FLAGS.GUILD_MESSAGES, Intents.FLAGS.GUILD_MEMBERS],
 });
 
+
+/**
+ * [event] - init
+ * listens on bot init
+ */
 bot.on('ready', () => console.log(`Logged in as ${bot.user.tag}.`));
 
-bot.on('message', async message => {
+
+/**
+ * [event] - Command read
+ * listens on a message being sent in a channel
+ * Used to read all messages and procs on finding
+ * command prefix.
+ */
+bot.on('message', async (message) => {
   // Check for command
   if (message.content.startsWith(config.prefix)) {
     let args = message.content.slice(config.prefix.length).split(' ');
@@ -25,17 +38,14 @@ bot.on('message', async message => {
     switch (command) {
 
       case 'ping':
-        let msg = await message.reply('Pinging...');
+        var msg = await message.reply('Pinging...');
         await msg.edit(`PONG! Message round-trip took ${Date.now() - msg.createdTimestamp}ms.`)
-        break;
+      break;
 
-      case 'say':
-      case 'repeat':
-        if (args.length > 0)
-          message.channel.send(args.join(' '));
-        else
-          message.reply('You did not send a message to repeat, cancelling command.')
-        break
+      case 'joke':
+        var msg = util.getJoke();
+        message.channel.send(msg);
+      break;
 
       /* Unless you know what you're doing, don't change this command. */
       case 'help':
@@ -65,11 +75,26 @@ bot.on('message', async message => {
           }
         }
         message.channel.send(embed);
-        break;
+      break;
     }
   }
 });
 
+/**
+ * [event] - Full message read
+ * listens on a message being sent in a channel
+ * Used to read all messages for certain strings
+ */
+bot.on('message', async (message) => { 
+
+  let msg = message.content.toLowerCase();
+
+  switch(msg){
+    case 'hi alex':
+      await message.reply('Hey!');
+    break;
+  }
+});
+
 require('./server')();
-console.log(config.token);
 bot.login(config.token);
