@@ -2,7 +2,7 @@ const { Client, Intents, MessageEmbed } = require('discord.js');
 const config = require('./config');
 const commands = require('./help');
 const util = require('./utility.js');
-requrie('dotenv').config()
+require('dotenv').config()
 
 const YTAPIKEY = process.env.YTAPIKEY;
 
