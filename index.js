@@ -2,6 +2,10 @@ const { Client, Intents, MessageEmbed } = require('discord.js');
 const config = require('./config');
 const commands = require('./help');
 const util = require('./utility.js');
+requrie('dotenv').config
+
+
+//AIzaSyCEkzzZqs97BkOiSYjFtigARUWIbfUAWAo - Youtube API key
 
 let bot = new Client({
   fetchAllMembers: true,
@@ -20,7 +24,15 @@ let bot = new Client({
  * [event] - init
  * listens on bot init
  */
-bot.on('ready', () => console.log(`Logged in as ${bot.user.tag}.`));
+bot.on('ready', () => {
+
+  const ONSP =  bot.guilds.cache.get('597939951069298688');
+
+  ONSP.members.cache.each((m) => {console.log(m.displayName)});
+  // Iterate through the collection of GuildMembers from the Guild getting the username property of each member 
+  //ONSP.forEach(member => console.log(member.user.username));
+  console.log(`Logged in as ${bot.user.tag}.`)
+});
 
 
 /**
@@ -45,6 +57,34 @@ bot.on('message', async (message) => {
       case 'joke':
         var msg = util.getJoke();
         message.channel.send(msg);
+      break;
+
+      case 'py':
+        try {
+          if (!message.guild) return;
+    
+          // Only try to join the sender's voice channel if they are in one themselves
+          if (message.member.voice.channel) {
+              console.log(message.member.voice.channel.id)
+              const channel = guild.channels.get(message.member.voice.channel.id);
+              if (!channel) return console.error("The channel does not exist!");
+              channel.join().then(connection => {
+                // Yay, it worked!
+                console.log("Successfully connected.");
+              }).catch(e => {
+                // Oh no, it errored! Let's log it to console :)
+                console.error(e);
+              });
+              //const connection = await message.member.voice.channel.join();
+              // const args = message.content.split(' ').slice(1)
+              // const ytdl = require('ytdl-core')
+              // connection.play(ytdl(args.join(" "), "AIzaSyCEkzzZqs97BkOiSYjFtigARUWIbfUAWAo"))
+          } else {
+              message.reply('You need to join a voice channel first!');
+          }
+        } catch(e){
+          console.log(e)
+        }
       break;
 
       /* Unless you know what you're doing, don't change this command. */
