@@ -5,7 +5,7 @@ const util = require('./utility.js');
 requrie('dotenv').config
 
 
-//AIzaSyCEkzzZqs97BkOiSYjFtigARUWIbfUAWAo - Youtube API key
+
 
 let bot = new Client({
   fetchAllMembers: true,
