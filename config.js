@@ -1,4 +1,5 @@
+require('dotenv').config()
 module.exports = {
     prefix: '&',
-    token: process.argv[2],
+    token: process.env.BOTSECRET,
 };

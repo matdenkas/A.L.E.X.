@@ -2,9 +2,9 @@ const { Client, Intents, MessageEmbed } = require('discord.js');
 const config = require('./config');
 const commands = require('./help');
 const util = require('./utility.js');
-requrie('dotenv').config
+requrie('dotenv').config()
 
-
+const YTAPIKEY = process.env.YTAPIKEY;
 
 
 let bot = new Client({
@@ -78,7 +78,7 @@ bot.on('message', async (message) => {
               //const connection = await message.member.voice.channel.join();
               // const args = message.content.split(' ').slice(1)
               // const ytdl = require('ytdl-core')
-              // connection.play(ytdl(args.join(" "), "AIzaSyCEkzzZqs97BkOiSYjFtigARUWIbfUAWAo"))
+              // connection.play(ytdl(args.join(" "), YTAPIKEY))
           } else {
               message.reply('You need to join a voice channel first!');
           }
